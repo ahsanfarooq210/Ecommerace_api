@@ -3,6 +3,7 @@ import helmet from "helmet";
 import { connect } from 'mongoose';
 import { config } from 'dotenv';
 import userRoutes from './routes/user.js'
+import authRoutes from './routes/auth-route.js'
 
 
 //Configurations
@@ -14,7 +15,7 @@ app.use(helmet())
 
 //Routes
 app.use('/user',userRoutes)
-
+app.use('/auth',authRoutes)
 
 //--------------------------------------------------------------------
 
@@ -25,7 +26,7 @@ If there is an error in connecting to the database, it logs the error message to
 connect(process.env.MONGO_DB_URL).then(()=>{
     console.log("Mongo Db connected")
 }).catch((error)=>{
-    console.log(error)
+    console.log(error)  
 })
 
 
