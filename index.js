@@ -14,7 +14,7 @@ app.use(helmet())
 //-------------------------------------------------------------------
 
 //Routes
-// app.use('/user',userRoutes)
+app.use('/api/users',userRoutes)
 app.use('/api/auth',authRoutes)
 
 //--------------------------------------------------------------------
