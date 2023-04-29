@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-import  CryptoJS  from "crypto-js";
+import CryptoJS from "crypto-js";
 
 export const getUserTest = async (_req, res) => {
   try {
@@ -71,5 +71,29 @@ export const getAllUsers = async (req, res) => {
 };
 
 export const getUserStats = async (req, res) => {
-
+  const date = new Date();
+  const lastyear = new Date(date.setFullYear(date.getFullYear() - 1));
+  try {
+    const data = await User.aggregate([
+      {
+        $match: {
+          createdAt: { $gt: lastyear },
+        },
+      },
+      {
+        $project: {
+          month: { $month: "$createdAt" },
+        },
+      },
+      {
+        $group: {
+          _id: "$month",
+          total: { $sum: 1 },
+        },
+      },
+    ]);
+    res.status(200).json(data)
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };
