@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import  CryptoJS  from "crypto-js";
 
 export const getUserTest = async (_req, res) => {
   try {
@@ -49,6 +50,7 @@ export const deleteUser = async (req, res) => {
 export const getUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
+    // eslint-disable-next-line no-unused-vars
     const { password, ...others } = user._doc;
     res.status(200).json({ others });
   } catch (error) {
@@ -68,4 +70,6 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-export const getUserStats = (_req, _res) => {};
+export const getUserStats = async (req, res) => {
+
+};
