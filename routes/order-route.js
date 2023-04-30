@@ -3,7 +3,7 @@ import {
   verifyTokenAndAdmin,
   verifyTokenAuthorization,
 } from "./verifyToken.js";
-import { createOrder, deleteOrder, getAllOrders, getOrder, updateOrder } from "../controller/order-controller.js";
+import { createOrder, deleteOrder, getAllOrders, getMontlyIncome, getUserOrders, updateOrder } from "../controller/order-controller.js";
 
 const router = express.Router();
 
@@ -14,12 +14,15 @@ router.post("/", verifyTokenAndAdmin, createOrder);
 router.put("/:id", verifyTokenAuthorization, updateOrder);
 
 // DELETE
-router.delete("/:id", verifyTokenAuthorization, deleteOrder);
+router.delete("/:id", verifyTokenAndAdmin, deleteOrder);
 
-// GET CART
-router.get("/find/:userid", getOrder);
+// GET USER CART
+router.get("/find/:userid", getUserOrders);
 
 // GET ALL Cart
 router.get("/", verifyTokenAndAdmin, getAllOrders);
+
+//GET MONTHLY INCOME
+router.get('/income',verifyTokenAndAdmin,getMontlyIncome)
 
 export default router;
