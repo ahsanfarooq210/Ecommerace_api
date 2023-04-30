@@ -1,10 +1,9 @@
-import Order from "../models/Order";
-import Orders from "../models/Order";
+import Orders from "../models/Order.js";
 
 export const createOrder = async (req, res) => {
   try {
-    const newOrder = new Order(req.body);
-    const savedOrder = newOrder.save();
+    const newOrder = new Orders(req.body);
+    const savedOrder =await newOrder.save();
     res.status(200).json(savedOrder);
   } catch (error) {
     res.status(500).json(error.message);
@@ -58,10 +57,10 @@ export const getMontlyIncome=async(req,res)=>{
     const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
     const previousMonth=new Date(new Date().setMonth(lastMonth.getMonth()-1))
     try {
-      const order = await Orders.aggregate([
+      const income = await Orders.aggregate([
         {
           $match: {
-            createdAt: { $gt: previousMonth },
+            createdAt: { $gte: previousMonth },
           },
         },
         {
@@ -77,7 +76,7 @@ export const getMontlyIncome=async(req,res)=>{
           },
         },
       ]);
-      res.status(200).json(order)
+      res.status(200).json(income)
     } catch (error) {
       res.status(500).json(error);
     }
