@@ -6,23 +6,31 @@ on:
       - master
 
 jobs:
-  deploy:
+  Deploy:
+    name: Deploy to EC2
     runs-on: ubuntu-latest
-
+    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - uses: actions/checkout@v2 
+      - name: Build & Deploy
+        env:
+            PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+            HOSTNAME: ${{secrets.HOST_DNS}}
+            USER_NAME: ${{secrets.USERNAME}}
+      
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
 
-    - name: Install dependencies
-      run: npm install
+              # Deploy Commands here
+              . ./export_env.sh
+              cd ~/storynoi
+              pm2 delete storynoi
+              pm2 save
+              git checkout main
+              git pull origin main
+              npm i
+              npm run start
+              pm2 start npm --name "storynoi" -- start
+              '
 
-    - name: Copy SSH key
-      run: echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
-
-    - name: Deploy to EC2
-      run: |
-        scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -r * ahsan.farooq@34.230.6.209:/ecom
-
-    - name: SSH into EC2 and start app
-      run: |
-        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ahsan.farooq@34.230.6.209 "cd /ecom && npm install && pm2 start npm --name "ecomapi" -- start"
