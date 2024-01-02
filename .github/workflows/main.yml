@@ -23,10 +23,10 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
 
               # Deploy Commands here
-              . ./export_env.sh
+
               cd ~/storynoi
               pm2 delete storynoi
-              pm2 save
+              pm2 save --force
               git checkout master
               git pull origin master
               npm i
