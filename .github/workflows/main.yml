@@ -20,7 +20,7 @@ jobs:
       
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
-          sudo ssh-keygen -f private_key ${USER_NAME}@${HOSTNAME} '
+          sudo ssh -i private_key ${USER_NAME}@${HOSTNAME}
 
               # Deploy Commands here
               . ./export_env.sh
