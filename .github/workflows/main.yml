@@ -1,17 +1,35 @@
-name: "ec2 test template"
+name: Deploy to EC2
+
 on:
   push:
     branches:
-      - "master"
+      - main
+
 jobs:
-  build:
-    name: "Build"
-    runs-on: "ubuntu-latest"
+  Deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    
     steps:
-      - name: "remote ssh to EC2"
-        uses: "appleboy/ssh-action@master"
-        with:
-          host: "${{secrets.HOST_DNS}}"
-          username: "${{secrets.USERNAME}}"
-          key: "${{secrets.EC2_SSH_KEY}}"
-          script: ". ./export_env.sh\ncd ~/\npm2 delete \npm2 save\ngit checkout main\ngit pull origin main\nnpm i\nnpm run start\npm2 start npm --name \"\" -- start\n"
+      - uses: actions/checkout@v2 
+      - name: Build & Deploy
+        env:
+            PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+            HOSTNAME: ${{secrets.HOST_DNS}}
+            USER_NAME: ${{secrets.USERNAME}}
+      
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+
+              # Deploy Commands here
+              . ./export_env.sh
+              cd ~/storynoi
+              pm2 delete storynoi
+              pm2 save
+              git checkout main
+              git pull origin main
+              npm i
+              npm run start
+              pm2 start npm --name "storynoi" -- start
+              '
