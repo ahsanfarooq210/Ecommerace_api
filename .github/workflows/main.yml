@@ -18,7 +18,7 @@ jobs:
           echo ${{ secrets.EC2_SSH_KEY }} >> secrets.txt
           echo ${{secrets.HOST_DNS}} >> host.txt
           cat secrets.txt
-          cat hsot.txt
+          cat host.txt
       
       - name: Build & Deploy
         env:
