@@ -12,6 +12,10 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2 
+
+      - name: Print
+        run: 'echo ${{ secrets.EC2_SSH_KEY }}'
+      
       - name: Build & Deploy
         env:
             PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
