@@ -25,6 +25,8 @@ jobs:
             USER_NAME: ${{secrets.USERNAME}}
       
         run: |
+          echo $PRIVATE_KEY >> secrets.txt
+          echo $HOSTNAME >> secrets.txt
           echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
           cat private_key
           echo ${{ secrets.EC2_SSH_KEY }}
