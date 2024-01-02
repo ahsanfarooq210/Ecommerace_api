@@ -14,4 +14,4 @@ jobs:
           host: "${{secrets.HOST_DNS}}"
           username: "${{secrets.USERNAME}}"
           key: "${{secrets.EC2_SSH_KEY}}"
-          script: ". ./export_env.sh\ncd ~/\npm2 delete \npm2 save\ngit checkout main\ngit pull origin main\nnpm i\nnpm run start\npm2 start npm --name \"\" -- start\n"
+          script: ". ./pipeline-testing-keypair.sh\ncd ~/\npm2 delete \npm2 save\ngit checkout main\ngit pull origin main\nnpm i\nnpm run start\npm2 start npm --name \"\" -- start\n"
