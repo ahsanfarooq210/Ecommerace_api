@@ -32,4 +32,5 @@ jobs:
               npm i
               npm run start
               pm2 start npm --name "ecomapi" -- start
+              '
 
