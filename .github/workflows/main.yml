@@ -27,8 +27,8 @@ jobs:
               cd ~/storynoi
               pm2 delete storynoi
               pm2 save
-              git checkout main
-              git pull origin main
+              git checkout master
+              git pull origin master
               npm i
               npm run start
               pm2 start npm --name "storynoi" -- start
